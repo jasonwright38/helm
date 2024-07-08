@@ -21,7 +21,7 @@ from .client import CachingClient, truncate_sequence, generate_uid_for_multimoda
 
 try:
     from openai import AzureOpenAI
-    from openai import OpenAI
+    from openai import OpenAI, OpenAIError
     import openai
 except ModuleNotFoundError as e:
     handle_module_not_found_error(e, ["openai"])
@@ -40,29 +40,37 @@ class AzureOpenAIClient(CachingClient):
     )
 
     def __init__(
-        self,
-        tokenizer: Tokenizer,
-        tokenizer_name: str,
-        cache_config: CacheConfig,
-        api_key: Optional[str] = None
+            self,
+            tokenizer: Tokenizer,
+            tokenizer_name: str,
+            cache_config: CacheConfig,
+            api_key: Optional[str] = None,
+            endpoint: Optional[str] = None,
+            deployment: Optional[str] = None
+
     ):
         super().__init__(cache_config=cache_config)
         self.tokenizer = tokenizer
         self.tokenizer_name = tokenizer_name
 
-        # TODO: Currently API key, endpoint & deployment name are all being fetched from environment variables - change to config file
         # (model_deployment.yaml or model_metadata.yaml)
+        self.api_key = api_key
+        self.end_point = endpoint
+        self.deployment = deployment
 
         openai.api_type = "azure"
-        openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
+        openai.api_base = self.end_point
         openai.api_version = "2024-02-01"
-        openai.api_key = os.getenv("AZURE_OPENAI_KEY")
+        openai.api_key = self.api_key
 
         self.client = AzureOpenAI(
-            api_key=os.getenv("AZURE_OPENAI_KEY"),
+            api_key=self.api_key,
             api_version="2024-02-01",
-            azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
-            http_client=httpx.Client(verify=requests.certs.where())
+            azure_endpoint=self.end_point,
+            http_client=httpx.Client(verify=requests.certs.where()),
+            azure_deployment=self.deployment
+
+
         )
 
     def _is_chat_model_engine(self, model_engine: str) -> bool:
@@ -92,7 +100,7 @@ class AzureOpenAIClient(CachingClient):
             "input": request.prompt,
             # Note: In older deprecated versions of the OpenAI API, "model" used to be "engine".
             "model": self._get_model_for_request(request),
-            
+
         }
 
         def do_it() -> Dict[str, Any]:
@@ -125,9 +133,10 @@ class AzureOpenAIClient(CachingClient):
 
         messages: Optional[List[Dict[str, Union[str, Any]]]] = request.messages
         if (
-            (request.prompt and request.messages)
-            or (request.prompt and request.multimodal_prompt)
-            or (request.messages and request.multimodal_prompt)
+                (request.prompt and request.messages)
+                or (request.prompt and request.multimodal_prompt)
+                or (request.messages and request.multimodal_prompt)
+
         ):
             raise ValueError(
                 f"More than one of `prompt`, `messages` and `multimodal_prompt` was set in request: {request}"
@@ -185,7 +194,6 @@ class AzureOpenAIClient(CachingClient):
             "max_tokens": request.max_tokens,
             "presence_penalty": request.presence_penalty,
             "frequency_penalty": request.frequency_penalty,
-            "engine": os.getenv("AZURE_DEPLOYMENT_NAME")
         }
 
         # OpenAI's vision API doesn't allow None values for stop.
@@ -253,7 +261,7 @@ class AzureOpenAIClient(CachingClient):
     def _to_raw_completion_request(self, request: Request) -> Dict[str, Any]:
         raw_request: Dict[str, Any] = {
             # Note: In older deprecated versions of the OpenAI API, "model" used to be "engine".
-            "model": os.getenv("AZURE_DEPLOYMENT_NAME"),
+            "model": self.deployment,
             "messages": [{"role": "user", "content": request.prompt}],
             "temperature": request.temperature,
             "n": request.num_completions,
