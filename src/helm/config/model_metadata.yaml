@@ -2727,7 +2727,7 @@ models:
     tags: [VISION_LANGUAGE_MODEL_TAG, LIMITED_FUNCTIONALITY_TEXT_MODEL_TAG]
 
   - name: azureLlama3/Meta-Llama-3-70B
-    display_name: Azure Meta LLama 3 (70B)
+    display_name: Azure Meta Llama 3 (70B)
     description: Azure Hosted Meta Llama 3 with 70B params
     creator_organization_name: Meta
     access: limited
