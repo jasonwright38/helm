@@ -343,7 +343,11 @@ def get_analytical_defence_qa_spec() -> RunSpec:
         name="analytical_defence_qa",
         scenario_spec=scenario_spec,
         adapter_spec=adapter_spec,
-        metric_specs=get_open_ended_generation_metric_specs() + get_generative_harms_metric_specs(),
+        metric_specs=get_open_ended_generation_metric_specs() + 
+            get_generative_harms_metric_specs(
+                include_basic_metrics = True, 
+                include_generative_harms_metrics = True
+            ),
         groups=["analytical_defence_qa"],
     )
 
@@ -364,7 +368,11 @@ def get_open_ended_defence_qa_spec() -> RunSpec:
         name="open_ended_defence_qa",
         scenario_spec=scenario_spec,
         adapter_spec=adapter_spec,
-        metric_specs=get_open_ended_generation_metric_specs() + get_generative_harms_metric_specs(),
+        metric_specs=get_open_ended_generation_metric_specs()  + 
+            get_generative_harms_metric_specs(
+                include_basic_metrics = True, 
+                include_generative_harms_metrics = True
+            ),
         groups=["open_ended_defence_qa"],
     )
 
@@ -410,6 +418,10 @@ def get_mc_defence_qa_spec(method: str = ADAPT_MULTIPLE_CHOICE_JOINT) -> RunSpec
         name=f"mc_defence_qa:method={method}",
         scenario_spec=scenario_spec,
         adapter_spec=adapter_spec,
-        metric_specs=get_exact_match_metric_specs(),
+        metric_specs=get_exact_match_metric_specs() + 
+            get_generative_harms_metric_specs(
+                include_basic_metrics = True, 
+                include_generative_harms_metrics = True
+            ),
         groups=["mc_defence_qa"],
     )
