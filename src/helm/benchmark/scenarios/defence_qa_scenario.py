@@ -19,6 +19,7 @@ class DefenceQAScenario(NarrativeQAScenario):
     name = "defenceqa"
     description = "Question answering using defence data"
     version = "v1"
+    file_name = "filtered_qa.csv"
 
     def __init__(self):
         super(DefenceQAScenario, self).__init__()
@@ -26,7 +27,7 @@ class DefenceQAScenario(NarrativeQAScenario):
     def get_instances(self, output_path: str, dataset_dir: str="datasets/processed_data/defence") -> List[Instance]:
         base_dir = os.path.join(os.getcwd(), dataset_dir)
         df_summaries = pd.read_csv(os.path.join(os.path.dirname(os.path.dirname(base_dir)), "text_chunks.csv"))
-        df_qa = pd.read_csv(os.path.join(base_dir, "qa.csv"))
+        df_qa = pd.read_csv(os.path.join(base_dir, file_name))
 
         instances: List[Instance] = []
 
@@ -101,7 +102,7 @@ class MCDefenceQAScenario(DefenceQAScenario):
 
         base_dir = os.path.join(os.getcwd(), dataset_dir)
         df_summaries = pd.read_csv(os.path.join(os.path.dirname(os.path.dirname(base_dir)), "text_chunks.csv"))
-        df_qa = pd.read_csv(os.path.join(base_dir, "qa.csv"))
+        df_qa = pd.read_csv(os.path.join(base_dir, file_name))
 
         instances: List[Instance] = []
 
