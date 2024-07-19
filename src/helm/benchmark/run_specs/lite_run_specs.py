@@ -385,7 +385,11 @@ def get_factual_defence_qa_spec() -> RunSpec:
         name="factual_defence_qa",
         scenario_spec=scenario_spec,
         adapter_spec=adapter_spec,
-        metric_specs=get_open_ended_generation_metric_specs() + get_generative_harms_metric_specs(),
+        metric_specs=get_open_ended_generation_metric_specs() + 
+            get_generative_harms_metric_specs(
+                include_basic_metrics = True, 
+                include_generative_harms_metrics = True
+            ),
         groups=["factual_defence_qa"],
     )
 
