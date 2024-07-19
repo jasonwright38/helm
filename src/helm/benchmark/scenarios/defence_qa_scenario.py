@@ -18,7 +18,7 @@ CORRECT_TAG: str = "correct"
 class DefenceQAScenario(NarrativeQAScenario):
     name = "defenceqa"
     description = "Question answering using defence data"
-    version = "v0"
+    version = "v1"
 
     def __init__(self):
         super(DefenceQAScenario, self).__init__()
