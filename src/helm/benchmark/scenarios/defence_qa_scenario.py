@@ -102,7 +102,7 @@ class MCDefenceQAScenario(DefenceQAScenario):
 
         base_dir = os.path.join(os.getcwd(), dataset_dir)
         df_summaries = pd.read_csv(os.path.join(os.path.dirname(os.path.dirname(base_dir)), "text_chunks.csv"))
-        df_qa = pd.read_csv(os.path.join(base_dir, file_name))
+        df_qa = pd.read_csv(os.path.join(base_dir, self.file_name))
 
         instances: List[Instance] = []
 
