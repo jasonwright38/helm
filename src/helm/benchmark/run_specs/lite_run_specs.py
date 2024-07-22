@@ -24,6 +24,28 @@ from helm.benchmark.metrics.common_metric_specs import (
 from helm.benchmark.run_spec import RunSpec, run_spec_function
 from helm.benchmark.runner import get_benchmark_output_path
 from helm.benchmark.scenarios.scenario import ScenarioSpec, get_scenario_cache_path
+from helm.benchmark.augmentations.data_augmenter import DataAugmenterSpec
+
+# Define perturbation specifications for fairness and robustness
+# fairness_perturbation_spec = PerturbationSpec(
+#     class_name="helm.benchmark.augmentations.perturbation.ExtraSpacePerturbation",
+#     args={"num_spaces": 5}  # Example argument, replace with actual perturbation logic
+# )
+
+robustness_perturbation_spec = PerturbationSpec(
+    class_name="helm.benchmark.augmentations.mild_mix_perturbation.MildMixPerturbation",
+    args={}
+)
+
+# Create the DataAugmenterSpec
+data_augmenter_spec = DataAugmenterSpec(
+    perturbation_specs=[fairness_perturbation_spec, robustness_perturbation_spec],
+    should_perturb_references=False,
+    should_augment_train_instances=False,
+    should_include_original_train=False,
+    should_augment_eval_instances=True,
+    should_include_original_eval=True,
+)
 
 
 @run_spec_function("narrative_qa")
@@ -348,6 +370,7 @@ def get_analytical_defence_qa_spec() -> RunSpec:
                 include_basic_metrics = True, 
                 include_generative_harms_metrics = True
             ),
+        data_augmenter_spec=data_augmenter_spec,
         groups=["analytical_defence_qa"],
     )
 
@@ -373,6 +396,7 @@ def get_open_ended_defence_qa_spec() -> RunSpec:
                 include_basic_metrics = True, 
                 include_generative_harms_metrics = True
             ),
+        data_augmenter_spec=data_augmenter_spec,
         groups=["open_ended_defence_qa"],
     )
 
@@ -398,6 +422,7 @@ def get_factual_defence_qa_spec() -> RunSpec:
                 include_basic_metrics = True, 
                 include_generative_harms_metrics = True
             ),
+        data_augmenter_spec=data_augmenter_spec,
         groups=["factual_defence_qa"],
     )
 
@@ -423,5 +448,6 @@ def get_mc_defence_qa_spec(method: str = ADAPT_MULTIPLE_CHOICE_JOINT) -> RunSpec
                 include_basic_metrics = True, 
                 include_generative_harms_metrics = True
             ),
+        data_augmenter_spec=data_augmenter_spec,
         groups=["mc_defence_qa"],
     )
