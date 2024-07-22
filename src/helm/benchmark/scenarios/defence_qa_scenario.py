@@ -19,7 +19,7 @@ class DefenceQAScenario(NarrativeQAScenario):
     name = "defenceqa"
     description = "Question answering using defence data"
     version = "v1"
-    file_name = "filtered_qa.csv"
+    file_name = "qa.csv"
 
     def __init__(self):
         super(DefenceQAScenario, self).__init__()
