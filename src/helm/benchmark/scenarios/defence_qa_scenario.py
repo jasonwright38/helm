@@ -36,9 +36,22 @@ class DefenceQAScenario(NarrativeQAScenario):
             answer = row["answer"]
             context_id = row["context_id"]
             print("context_id={}".format(context_id))
-            summary = (
-                df_summaries[df_summaries["context_id"].apply(lambda x: x in context_id)].iloc[0]["text_chunk"]
-            )
+            
+            # summary = (
+            #     df_summaries[df_summaries["context_id"].apply(lambda x: x in context_id)].iloc[0]["text_chunk"]
+            # )
+            summary_row = df_summaries[df_summaries["context_id"].apply(lambda x: x in context_id)]
+            
+            if summary_row.empty:
+                print(f"Warning: No summary found for context_id {context_id}")
+                summary = "Summary not available."
+            else:
+                summary = summary_row.iloc[0]["text_chunk"]
+
+                # Handle missing values in summary
+                if pd.isna(summary):
+                    summary = "Summary not available."
+
             instance: Instance = Instance(
                 input=self.get_context(summary.strip(), question.strip()),
                 references=[
