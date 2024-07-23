@@ -816,8 +816,18 @@ class Summarizer:
         aggregate_stat: Optional[Stat] = None
         aggregated_run_specs: List[str] = []  # keep track of which run_specs we aggregate into the cell for debugging
 
+        # Log the matcher details and other debugging
+        print()
+        print(f"Creating cell with matcher: {matcher}")
+        print(f"aggregate_stat: {aggregate_stat}")
+        print(f"aggregated_run_specs: {aggregated_run_specs}")
+        print()
+
+        
         for run in runs:
             stat = get_unique_stat_by_matcher(run.stats, matcher)
+            print(f"STAT NAME = {stat}")
+            
             if stat is None:
                 # Print out near misses to provide a more informative warning
                 near_misses = [stat for stat in run.stats if stat.name.name == matcher.name]
