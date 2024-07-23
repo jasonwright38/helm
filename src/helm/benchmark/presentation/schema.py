@@ -97,6 +97,8 @@ class MetricNameMatcher:
         return True
 
     def substitute(self, environment: Dict[str, str]) -> "MetricNameMatcher":
+        substituted_name = mako.template.Template(self.name).render(**environment)
+        print(f"Substituting name: {self.name} -> {substituted_name}") # For debugging
         return MetricNameMatcher(
             name=mako.template.Template(self.name).render(**environment),
             split=mako.template.Template(self.split).render(**environment),
