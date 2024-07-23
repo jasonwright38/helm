@@ -378,7 +378,7 @@ def get_analytical_defence_qa_spec() -> RunSpec:
             get_generative_harms_metric_specs(
                 include_basic_metrics = False, 
                 include_generative_harms_metrics = True
-            ), + 
+            ) + 
             get_efficiency_metric_specs(),
         data_augmenter_spec=data_augmenter_spec,
         groups=["analytical_defence_qa"],
@@ -405,7 +405,7 @@ def get_open_ended_defence_qa_spec() -> RunSpec:
             get_generative_harms_metric_specs(
                 include_basic_metrics = False, 
                 include_generative_harms_metrics = True
-            ), + 
+            ) + 
             get_efficiency_metric_specs(),
         data_augmenter_spec=data_augmenter_spec,
         groups=["open_ended_defence_qa"],
@@ -432,7 +432,7 @@ def get_factual_defence_qa_spec() -> RunSpec:
             get_generative_harms_metric_specs(
                 include_basic_metrics = False, 
                 include_generative_harms_metrics = True
-            ), + 
+            ) + 
             get_efficiency_metric_specs(),
         data_augmenter_spec=data_augmenter_spec,
         groups=["factual_defence_qa"],
@@ -459,7 +459,7 @@ def get_mc_defence_qa_spec(method: str = ADAPT_MULTIPLE_CHOICE_JOINT) -> RunSpec
             get_generative_harms_metric_specs(
                 include_basic_metrics = False, 
                 include_generative_harms_metrics = True
-            ), + 
+            ) + 
             get_efficiency_metric_specs(),
         data_augmenter_spec=data_augmenter_spec,
         groups=["mc_defence_qa"],
