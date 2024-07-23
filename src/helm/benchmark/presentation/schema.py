@@ -96,19 +96,32 @@ class MetricNameMatcher:
 
         return True
 
+    # def substitute(self, environment: Dict[str, str]) -> "MetricNameMatcher":
+    #     return MetricNameMatcher(
+    #         name=mako.template.Template(self.name).render(**environment),
+    #         split=mako.template.Template(self.split).render(**environment),
+    #         perturbation_name=(
+    #             mako.template.Template(self.perturbation_name).render(**environment)
+    #             if self.perturbation_name is not None
+    #             else None
+    #         ),
+    #     )
+        
+    # Debugging:
     def substitute(self, environment: Dict[str, str]) -> "MetricNameMatcher":
         substituted_name = mako.template.Template(self.name).render(**environment)
         print(f"Substituting name: {self.name} -> {substituted_name}") # For debugging
-        return MetricNameMatcher(
-            name=mako.template.Template(self.name).render(**environment),
-            split=mako.template.Template(self.split).render(**environment),
-            perturbation_name=(
-                mako.template.Template(self.perturbation_name).render(**environment)
-                if self.perturbation_name is not None
-                else None
-            ),
+        
+        name = mako.template.Template(self.name).render(**environment)
+        split = mako.template.Template(self.split).render(**environment)
+        perturbation_name = (
+            mako.template.Template(self.perturbation_name).render(**environment)
+            if self.perturbation_name is not None
+            else None
         )
-
+        print(f"Substituted MetricNameMatcher: name={name}, split={split}, perturbation_name={perturbation_name}")
+        return MetricNameMatcher(name=name, split=split, perturbation_name=perturbation_name)
+    
 
 @dataclass(frozen=True)
 class MetricGroup(Field):
