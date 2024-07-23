@@ -1339,7 +1339,7 @@ run_groups:
       - fairness
       - bias
       - toxicity
-      - efficiency
+      - efficiency_detailed
       - general_information
     environment:
       main_name: f1_score
@@ -1361,7 +1361,7 @@ run_groups:
       - fairness
       - bias
       - toxicity
-      - efficiency
+      - efficiency_detailed
       - general_information
     environment:
       main_name: f1_score
