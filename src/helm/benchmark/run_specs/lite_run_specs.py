@@ -28,7 +28,12 @@ from helm.benchmark.scenarios.scenario import ScenarioSpec, get_scenario_cache_p
 from helm.benchmark.augmentations.data_augmenter import DataAugmenterSpec
 from helm.benchmark.augmentations.perturbation import PerturbationSpec
 
-# Define perturbation specifications for fairness and robustness
+def get_efficiency_metric_specs() -> List[MetricSpec]:
+    return [
+        MetricSpec(class_name="helm.benchmark.metrics.image_generation.efficiency_metrics.EfficiencyMetric", args={}),
+    ]
+        
+# # Define perturbation specifications for fairness and robustness
 # fairness_perturbation_spec = PerturbationSpec(
 #     class_name="helm.benchmark.augmentations.perturbation.ExtraSpacePerturbation",
 #     args={"num_spaces": 5}  # Example argument, replace with actual perturbation logic
@@ -373,7 +378,8 @@ def get_analytical_defence_qa_spec() -> RunSpec:
             get_generative_harms_metric_specs(
                 include_basic_metrics = False, 
                 include_generative_harms_metrics = True
-            ),
+            ), + 
+            get_efficiency_metric_specs(),
         data_augmenter_spec=data_augmenter_spec,
         groups=["analytical_defence_qa"],
     )
@@ -399,7 +405,8 @@ def get_open_ended_defence_qa_spec() -> RunSpec:
             get_generative_harms_metric_specs(
                 include_basic_metrics = False, 
                 include_generative_harms_metrics = True
-            ),
+            ), + 
+            get_efficiency_metric_specs(),
         data_augmenter_spec=data_augmenter_spec,
         groups=["open_ended_defence_qa"],
     )
@@ -425,7 +432,8 @@ def get_factual_defence_qa_spec() -> RunSpec:
             get_generative_harms_metric_specs(
                 include_basic_metrics = False, 
                 include_generative_harms_metrics = True
-            ),
+            ), + 
+            get_efficiency_metric_specs(),
         data_augmenter_spec=data_augmenter_spec,
         groups=["factual_defence_qa"],
     )
@@ -451,7 +459,8 @@ def get_mc_defence_qa_spec(method: str = ADAPT_MULTIPLE_CHOICE_JOINT) -> RunSpec
             get_generative_harms_metric_specs(
                 include_basic_metrics = False, 
                 include_generative_harms_metrics = True
-            ),
+            ), + 
+            get_efficiency_metric_specs(),
         data_augmenter_spec=data_augmenter_spec,
         groups=["mc_defence_qa"],
     )
