@@ -2433,8 +2433,8 @@ model_deployments:
     client_spec:
       class_name: "helm.clients.reka_client.RekaClient"
 
-  - name: azureLlama3/Meta-Llama-3-70B
-    model_name: azureLlama3/Meta-Llama-3-70B
+  - name: azureLlama3/Meta-Llama-3-1-405B-Instruct
+    model_name: azureLlama3/Meta-Llama-3-1-405B-Instruct
     tokenizer_name: hf-internal-testing/llama-tokenizer
     max_sequence_length: 16000
     max_request_length: 16000
