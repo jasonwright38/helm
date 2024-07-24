@@ -1286,7 +1286,7 @@ run_groups:
       language: English
 
   - name: mc_defence_qa
-    display_name: Defence QA(Multiple-Choice)
+    display_name: DefenceQA (Multiple-Choice)
     description: Benchmark for multiple-choice question answering for defence documents
     metric_groups:
       - accuracy
@@ -1308,7 +1308,7 @@ run_groups:
       language: synthetic
 
   - name: analytical_defence_qa
-    display_name: Defence QA(Analytical)
+    display_name: DefenceQA (Analytical)
     description: Benchmark for analytical question answering for defence documents
     metric_groups:
       - accuracy
@@ -1330,7 +1330,7 @@ run_groups:
       language: English
 
   - name: open_ended_defence_qa
-    display_name: Defence QA(Open Ended)
+    display_name: DefenceQA (Open Ended)
     description: Benchmark for open ended question answering for defence documents
     metric_groups:
       - accuracy
@@ -1352,7 +1352,7 @@ run_groups:
       language: English
 
   - name: factual_defence_qa
-    display_name: Defence QA(Factual)
+    display_name: DefenceQA (Factual)
     description: Benchmark for factual question answering for defence documents
     metric_groups:
       - accuracy
