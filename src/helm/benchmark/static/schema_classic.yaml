@@ -1290,11 +1290,12 @@ run_groups:
     description: Benchmark for multiple-choice question answering for defence documents
     metric_groups:
       - accuracy
-      - calibration
+      # - calibration
       - robustness
-      - fairness
+      # - fairness
       - bias
       - toxicity
+      - efficiency
       - efficiency_detailed
       - general_information
     environment:
@@ -1312,9 +1313,9 @@ run_groups:
     description: Benchmark for analytical question answering for defence documents
     metric_groups:
       - accuracy
-      - calibration
+      # - calibration
       - robustness
-      - fairness
+      # - fairness
       - bias
       - toxicity
       - efficiency_detailed
@@ -1334,9 +1335,9 @@ run_groups:
     description: Benchmark for open ended question answering for defence documents
     metric_groups:
       - accuracy
-      - calibration
+      # - calibration
       - robustness
-      - fairness
+      # - fairness
       - bias
       - toxicity
       - efficiency_detailed
@@ -1356,9 +1357,9 @@ run_groups:
     description: Benchmark for factual question answering for defence documents
     metric_groups:
       - accuracy
-      - calibration
+      # - calibration
       - robustness
-      - fairness
+      # - fairness
       - bias
       - toxicity
       - efficiency_detailed
