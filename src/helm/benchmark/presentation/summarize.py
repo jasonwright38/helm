@@ -819,10 +819,6 @@ class Summarizer:
         # Log the matcher details and other debugging
         print()
         print(f"Creating cell with matcher: {matcher}")
-        print(f"aggregate_stat: {aggregate_stat}")
-        print(f"aggregated_run_specs: {aggregated_run_specs}")
-        print()
-
         
         for run in runs:
             stat = get_unique_stat_by_matcher(run.stats, matcher)
@@ -873,6 +869,11 @@ class Summarizer:
                     run_spec_names.append(run_spec_name)
                     run_spec_names_set.add(run_spec_name)
 
+        print(f"run_spec_name: {run_spec_name}")
+        print(f"aggregate_stat: {aggregate_stat}")
+        print(f"aggregated_run_specs: {aggregated_run_specs}")
+        print()
+        
         return Cell(
             value=value,
             description=description,
