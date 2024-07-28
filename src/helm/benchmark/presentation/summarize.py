@@ -869,7 +869,7 @@ class Summarizer:
                     run_spec_names.append(run_spec_name)
                     run_spec_names_set.add(run_spec_name)
 
-        print(f"run_spec_name: {run_spec_name}")
+        print(f"run_spec_names: {run_spec_names}")
         print(f"aggregate_stat: {aggregate_stat}")
         print(f"aggregated_run_specs: {aggregated_run_specs}")
         print()
