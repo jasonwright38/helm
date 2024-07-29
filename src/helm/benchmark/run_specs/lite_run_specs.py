@@ -378,7 +378,8 @@ def get_analytical_defence_qa_spec() -> RunSpec:
         name="analytical_defence_qa",
         scenario_spec=scenario_spec,
         adapter_spec=adapter_spec,
-        metric_specs=get_open_ended_generation_metric_specs() + 
+        metric_specs=
+            get_open_ended_generation_metric_specs() + 
             get_generative_harms_metric_specs(
                 include_basic_metrics = False, 
                 include_generative_harms_metrics = True
@@ -405,7 +406,8 @@ def get_open_ended_defence_qa_spec() -> RunSpec:
         name="open_ended_defence_qa",
         scenario_spec=scenario_spec,
         adapter_spec=adapter_spec,
-        metric_specs=get_open_ended_generation_metric_specs()  + 
+        metric_specs=
+            get_open_ended_generation_metric_specs()  + 
             get_generative_harms_metric_specs(
                 include_basic_metrics = False, 
                 include_generative_harms_metrics = True
@@ -432,15 +434,38 @@ def get_factual_defence_qa_spec() -> RunSpec:
         name="factual_defence_qa",
         scenario_spec=scenario_spec,
         adapter_spec=adapter_spec,
-        metric_specs=get_open_ended_generation_metric_specs() + 
+        metric_specs=
+            # Equivalent to:
+            # get_basic_generation_metric_specs(["exact_match", "quasi_exact_match", "f1_score", "rouge_l", "bleu_1", "bleu_4"]) 
+            # + get_basic_reference_metric_specs() 
+            # + get_generic_metric_specs()
+                # MetricSpec(class_name="helm.benchmark.metrics.basic_metrics.BasicGenerationMetric", args={"names": ["exact_match", "quasi_exact_match", "f1_score", "rouge_l", "bleu_1", "bleu_4"]}), 
+                # + MetricSpec(class_name="helm.benchmark.metrics.basic_metrics.BasicReferenceMetric", args={}) 
+                # + MetricSpec(class_name="helm.benchmark.metrics.basic_metrics.InstancesPerSplitMetric", args={}),
+            get_open_ended_generation_metric_specs() + 
+            # if include_basic_metrics:
+                # get_basic_generation_metric_specs(names) 
+                # + get_basic_reference_metric_specs() 
+                # + get_generic_metric_specs()
+
+            # Equivalent to:
+            # if include_generative_harms_metrics:
+                # get_bias_metric_specs()
+                # get_toxicity_metric_specs()
             get_generative_harms_metric_specs(
                 include_basic_metrics = False, 
                 include_generative_harms_metrics = True
             ) + 
+
+            # Equivalent to:
+            # MetricSpec(class_name="helm.benchmark.metrics.image_generation.efficiency_metrics.EfficiencyMetric", args={})            
             get_efficiency_metric_specs(),
         data_augmenter_spec=data_augmenter_spec,
         groups=["factual_defence_qa"],
     )
+#         metric_specs=get_basic_generation_metric_specs(["exact_match"])
+#         + get_generic_metric_specs()
+#         + get_generative_harms_metric_specs(),
 
 @run_spec_function("mc_defence_qa")
 def get_mc_defence_qa_spec(method: str = ADAPT_MULTIPLE_CHOICE_JOINT) -> RunSpec:
@@ -459,7 +484,9 @@ def get_mc_defence_qa_spec(method: str = ADAPT_MULTIPLE_CHOICE_JOINT) -> RunSpec
         name=f"mc_defence_qa:method={method}",
         scenario_spec=scenario_spec,
         adapter_spec=adapter_spec,
-        metric_specs=get_exact_match_metric_specs() + 
+        metric_specs=
+            # Same as get_open_ended_generation_metric_specs() but with arguments: ["exact_match", "quasi_exact_match", "f1_score", "rouge_l", "bleu_1", "bleu_4"]
+            get_exact_match_metric_specs() + 
             get_generative_harms_metric_specs(
                 include_basic_metrics = False, 
                 include_generative_harms_metrics = True
@@ -468,3 +495,31 @@ def get_mc_defence_qa_spec(method: str = ADAPT_MULTIPLE_CHOICE_JOINT) -> RunSpec
         data_augmenter_spec=data_augmenter_spec,
         groups=["mc_defence_qa"],
     )
+
+# test efficiency example from classic_run_specs.py
+# @run_spec_function("synthetic_efficiency")
+# def get_synthetic_efficiency_spec(
+#     num_prompt_tokens: Optional[int] = None,
+#     num_output_tokens: Optional[int] = None,
+#     tokenizer: Optional[str] = None,
+#     random: Optional[str] = None,
+# ) -> RunSpec:
+#     scenario_spec = ScenarioSpec(
+#         class_name="helm.benchmark.scenarios.synthetic_efficiency_scenario.SyntheticEfficiencyScenario",
+#         args={"num_prompt_tokens": num_prompt_tokens, "num_instances": 10, "tokenizer": tokenizer},
+#     )
+
+#     if num_output_tokens is not None:
+#         adapter_spec = get_completion_adapter_spec(max_tokens=num_output_tokens, random=random)
+#     else:
+#         adapter_spec = get_completion_adapter_spec(random=random)
+
+#     return RunSpec(
+#         name=f"synthetic_efficiency:random={random}",
+#         scenario_spec=scenario_spec,
+#         adapter_spec=adapter_spec,
+#         metric_specs=get_basic_generation_metric_specs(["exact_match"])
+#         + get_generic_metric_specs()
+#         + get_generative_harms_metric_specs(),
+#         groups=["synthetic_efficiency"],
+#     )
